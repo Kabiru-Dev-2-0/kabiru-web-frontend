@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-export type ProgressBarSize = "sm" | "md" | "lg";
+export type ProgressBarSize = "sm" | "md" | "lg" | "xl";
 
 export type ProgressBarVariant =
   | "primary"
@@ -57,6 +57,7 @@ const sizeHeights: Record<ProgressBarSize, string> = {
   sm: "2px",
   md: "4px",
   lg: "6px",
+  xl: "12px"
 };
 
 export function ProgressBar({
