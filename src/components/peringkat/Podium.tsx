@@ -7,7 +7,7 @@ export function Podium({ topUsers }: { topUsers: LeaderboardUser[] }) {
   const [rank2, rank1, rank3] = topUsers;
 
   return (
-    <div className="flex justify-center items-end gap-4 pt-6 pb-2">
+    <div className="flex justify-center items-end gap-4 pt-20 pb-2">
       {/* Rank 2 */}
       <PodiumCard user={rank2} color="success" height="short" />
       {/* Rank 1 */}

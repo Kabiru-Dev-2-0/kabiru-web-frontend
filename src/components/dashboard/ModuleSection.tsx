@@ -6,24 +6,18 @@ import ModuleItem from "./ModuleItem";
 import { ModuleData, ModuleSectionData } from "../../types/dashboard";
 
 export interface ModuleSectionProps {
-  /** Seluruh data section dari API response */
   data?: ModuleSectionData;
-  /** Judul section (override) */
   title?: string;
-  /** Ikon header (override) */
   icon?: React.ReactNode;
-  /** Warna background ikon (misal: "bg-[#277BC0]" atau "bg-[#00BC7D]") */
   iconBgColor?: string;
-  /** Daftar modul dari API response */
   modules?: ModuleData[];
-  /** Pesan ketika modul kosong */
   emptyMessage?: string;
-  /** State loading skeleton/spinner jika diperlukan */
   loading?: boolean;
+  progressVariant?: "primary" | "success" | "warning" | "error" | "disabled";
+  progressColor?: string;
   className?: string;
 }
 
-// Default mock data untuk fallback jika belum ada API
 const DEFAULT_MOCK_MODULES: ModuleData[] = [
   {
     id: "default-1",
@@ -38,10 +32,24 @@ const DEFAULT_MOCK_MODULES: ModuleData[] = [
   },
 ];
 
-export default function ModuleSection({ data, title, icon, iconBgColor, modules, emptyMessage = "Belum ada modul di kategori ini.", loading = false, className = "" }: ModuleSectionProps) {
+export default function ModuleSection({
+  data,
+  title,
+  icon,
+  iconBgColor,
+  modules,
+  emptyMessage = "Belum ada modul di kategori ini.",
+  loading = false,
+  progressVariant = "warning",
+  progressColor,
+  className = "",
+}: ModuleSectionProps) {
   const sectionTitle = title ?? data?.title ?? "Sedang dipelajari";
+
   const sectionIcon = icon ?? data?.icon;
+
   const sectionIconBg = iconBgColor ?? data?.iconBgColor ?? "bg-primary-default";
+
   const moduleList = modules ?? data?.modules ?? DEFAULT_MOCK_MODULES;
 
   return (
@@ -55,7 +63,7 @@ export default function ModuleSection({ data, title, icon, iconBgColor, modules,
       ) : (
         <div className="space-y-4">
           {moduleList.map((item) => (
-            <ModuleItem key={item.id} data={item} />
+            <ModuleItem key={item.id} data={item} progressVariant={progressVariant} progressColor={progressColor} />
           ))}
         </div>
       )}

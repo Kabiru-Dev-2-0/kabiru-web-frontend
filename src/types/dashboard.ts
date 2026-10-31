@@ -1,21 +1,14 @@
 import React from "react";
-import { VariantWidgetItem } from "../components/dashboard/WidgetItem";
 
 /**
  * Data untuk AI Recommendation Banner di Dashboard
  */
 export interface AiBannerData {
-  /** Pesan rekomendasi atau evaluasi dari AI */
   message: string;
-  /** Daftar kata kunci yang perlu di-highlight dengan garis bawah aksen */
   highlightedKeywords?: string[];
-  /** Teks label tombol aksi (misal: "Belajar lagi") */
   actionLabel?: string;
-  /** Link tujuan tombol (misal: "/practice/looping") */
   actionHref?: string;
-  /** Callback saat tombol diklik (alternatif dari actionHref) */
   onActionClick?: () => void;
-  /** Avatar / ikon (emoji atau URL icon) */
   avatar?: string;
 }
 
@@ -24,21 +17,15 @@ export interface AiBannerData {
  */
 export interface ModuleData {
   id: string | number;
-  /** Kategori atau label bab, misal: "Modul 1" atau "Dasar Pemrograman" */
   category?: string;
-  /** Judul modul utama */
   title: string;
-  /** Deskripsi singkat atau materi */
   description?: string;
-  /** Persentase progres modul: 0 - 100 */
   progressPercentage: number;
-  /** Link navigasi saat modul diklik */
+  progressCurrent?: number;
+  progressTotal?: number;
   href?: string;
-  /** Apakah menampilkan ilustrasi / maskot */
   showIllustration?: boolean;
-  /** Teks balon bicara ilustrasi maskot */
   speechBubbleText?: string;
-  /** Emoji atau URL icon maskot */
   illustrationIcon?: string;
 }
 
@@ -54,7 +41,7 @@ export interface T_ModuleHead {
 }
 
 /**
- * Data untuk satu section/kelompok modul (misal: "Sedang Dipelajari")
+ * Data untuk satu section/kelompok modul
  */
 export interface ModuleSectionData {
   id?: string | number;
@@ -66,25 +53,32 @@ export interface ModuleSectionData {
 }
 
 /**
- * Data untuk Widget Peringkat (Leaderboard)
+ * Data untuk Widget Peringkat
  */
 export interface RankingData {
   rank: number;
 }
 
 /**
- * Data untuk Widget Misi Harian
+ * Data dasar untuk Misi Harian
  */
 interface BaseChallenge {
   title: string;
+  /** Path ikon SVG dari folder public, contoh: "/icons/star.svg" */
   icon: string;
 }
 
+/**
+ * Misi dengan progres berbentuk persentase
+ */
 interface PercentageChallenge extends BaseChallenge {
   variant: "percentage";
-  percentage: number; // 0 - 100
+  percentage: number;
 }
 
+/**
+ * Misi dengan progres berbentuk tahapan
+ */
 interface FractionChallenge extends BaseChallenge {
   variant: "fraction";
   current: number;
@@ -94,16 +88,17 @@ interface FractionChallenge extends BaseChallenge {
 export type ChallengeData = PercentageChallenge | FractionChallenge;
 
 /**
- * Data untuk Widget Perjalananku (Level / Milestone)
+ * Data untuk Widget Perjalananku
  */
 export interface JourneyData {
-  level: string; // misal: "Pemula", "Menengah"
-  icon: string; // misal: "🐾"
-  percentage: number; // 0 - 100
+  level: string;
+  /** Path ikon SVG dari folder public */
+  icon: string;
+  percentage: number;
 }
 
 /**
- * Gabungan data untuk seluruh sidebar widgets di dashboard
+ * Gabungan data seluruh widgets pada dashboard
  */
 export interface DashboardWidgetsData {
   ranking: RankingData;
@@ -112,7 +107,7 @@ export interface DashboardWidgetsData {
 }
 
 /**
- * Struktur standar API Response terpusat untuk Dashboard
+ * Struktur standar API Response Dashboard
  */
 export interface DashboardApiResponse {
   aiBanner?: AiBannerData;

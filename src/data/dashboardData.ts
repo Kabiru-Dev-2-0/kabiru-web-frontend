@@ -22,19 +22,12 @@ export const mockInProgressModules: ModuleData[] = [
     title: "Pengenalan Algoritma & Logika Komputasi",
     description: "Memahami alur logika, variabel, tipe data, dan operasi aritmatika dasar.",
     progressPercentage: 65,
+    progressCurrent: 2,
+    progressTotal: 4,
     href: "/belajar/dasar-pemrograman",
     showIllustration: true,
     speechBubbleText: "Aku ingin mengenal lebih dalam tentang AI",
     illustrationIcon: "🤖",
-  },
-  {
-    id: "mod-in-progress-2",
-    category: "Modul 2: Struktur Kontrol",
-    title: "Percabangan & Logika Kondisional Lanjut",
-    description: "Mempelajari if-else bercabang, switch-case, dan evaluasi kondisi boolean.",
-    progressPercentage: 35,
-    href: "/belajar/struktur-kontrol",
-    showIllustration: false,
   },
 ];
 
@@ -61,48 +54,20 @@ export const mockRankingData: RankingData = {
 };
 
 /**
- * Data widget misi harian pengguna
+ * Data widget Misi Harian pengguna
+ *
+ * variant percentage:
+ * Menampilkan progres dalam bentuk persentase.
+ *
+ * variant fraction:
+ * Menampilkan progres dalam bentuk current/total.
  */
 export const mockChallenge: ChallengeData[] = [
   {
     title: "Dapatkan 10 XP",
-    current: 8,
-    total: 10,
-    icon: "⭐",
-    variant: "fraction",
-  },
-  {
-    title: "Selesaikan 3 pelajaran",
-    current: 1,
-    total: 3,
-    icon: "📚",
-    variant: "fraction",
-  },
-  {
-    title: "Jawab benar 5 soal berturut-turut",
-    current: 3,
-    total: 5,
-    icon: "🎯",
-    variant: "fraction",
-  },
-  {
-    title: "Belajar 15 menit hari ini",
-    percentage: 15,
-    icon: "⏱️",
+    percentage: 84,
+    icon: "/icons/star.svg",
     variant: "percentage",
-  },
-  {
-    title: "Dapatkan 30 Exp hari ini",
-    percentage: 30,
-    icon: "🔥",
-    variant: "percentage",
-  },
-  {
-    title: "Ajak 1 teman belajar",
-    current: 0,
-    total: 1,
-    icon: "🤝",
-    variant: "fraction",
   },
 ];
 
@@ -112,7 +77,7 @@ export const mockChallenge: ChallengeData[] = [
 export const mockJourneyData: JourneyData[] = [
   {
     level: "Pemula",
-    icon: "🐾",
+    icon: "/icons/paw.svg",
     percentage: 40,
   },
 ];
@@ -128,29 +93,29 @@ export const mockDashboardWidgets: DashboardWidgetsData = {
 
 /**
  * Objek terpusat API response untuk halaman dashboard
- * (Dapat langsung digunakan atau dijadikan mock response API backend)
  */
 export const dashboardData: DashboardApiResponse = {
   aiBanner: mockAiBannerData,
+
   inProgressSection: {
     id: "section-in-progress",
     title: "Sedang Dipelajari",
     modules: mockInProgressModules,
   },
+
   completedSection: {
     id: "section-completed",
     title: "Selesai Dipelajari",
     modules: mockCompletedModules,
     emptyMessage: "Belum ada modul yang selesai kamu pelajari. Ayo selesaikan modul pertamamu!",
   },
+
   widgets: mockDashboardWidgets,
 };
 
 /**
- * Simulasi helper fungsi fetch data dashboard (asynchronous)
- * Sangat berguna ketika ingin mensimulasikan pemanggilan API dengan React Server Component atau TanStack Query
+ * Simulasi helper fungsi fetch data dashboard
  */
 export async function getDashboardData(): Promise<DashboardApiResponse> {
-  // Simulasi network delay jika diperlukan
   return Promise.resolve(dashboardData);
 }

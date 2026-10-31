@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import { RankingData } from "../../types/dashboard";
 import WidgetItem from "./WidgetItem";
+import { Card } from "../ui/Card";
 
 export interface RankingWidgetProps {
   data?: RankingData;
@@ -14,24 +14,30 @@ export interface RankingWidgetProps {
 
 export default function RankingWidget({ data, href = "/peringkat", loading = false, className = "" }: RankingWidgetProps) {
   if (loading) {
-    return <div className="bg-white p-5 rounded-xl border border-border-main shadow-sm animate-pulse h-28" />;
+    return (
+      <Card padding={12} color="#FFFFFF" border={false} shadow className={(className = `shadow-lg`)}>
+        <div className="h-16 animate-pulse rounded-md bg-[#F0F1F3]" />
+      </Card>
+    );
   }
 
   return (
-    <div className={`bg-white p-5 rounded-xl border color-border-main shadow-sm ${className}`.trim()}>
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="text-heading font-bold text-primary-default">Peringkat</h3>
-        <Link href={href} className="text-small text-text-paragraph-75 hover:text-primary-default hover:underline transition-colors">
+    <Card padding={14} color="#FFFFFF" border={false} shadow className={(className = `shadow-lg`)}>
+      {/* Header */}
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="text-lg font-bold leading-6 text-[#9333EA]">Peringkat</h3>
+
+        <Link href={href} className="text-xs font-medium text-primary-default hover:underline">
           Lihat Semua
         </Link>
       </div>
+
+      {/* Content */}
       {!data ? (
-        <div className="bg-white p-4 rounded-xl text-center text-paragraph text-text-paragraph-75">Mulai belajar untuk masuk podium</div>
+        <div className="py-2 text-center text-sm text-text-paragraph-75">Mulai belajar untuk masuk podium</div>
       ) : (
-        <div className="space-y-2">
-          <WidgetItem title="Saat ini kamu di peringkat" showPercentage={false} icon="🏆" variant="rank" current={data.rank} />
-        </div>
+        <WidgetItem title="Saat ini kamu di peringkat" iconSrc="/icons/trophy.svg" variant="rank" current={data.rank} />
       )}
-    </div>
+    </Card>
   );
 }

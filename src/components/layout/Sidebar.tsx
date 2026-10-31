@@ -60,9 +60,7 @@ type MenuItem = {
 };
 
 function SidebarMenu({ item, pathname }: { item: MenuItem; pathname: string }) {
-  const isActive =
-    pathname === item.href ||
-    (item.href !== "/" && pathname.startsWith(`${item.href}/`));
+  const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(`${item.href}/`));
 
   return (
     <li>
@@ -78,22 +76,13 @@ function SidebarMenu({ item, pathname }: { item: MenuItem; pathname: string }) {
           "focus-visible:outline-[#5295CD]",
           item.danger ? "text-[#F31260] hover:bg-[#FFF0F5]" : "text-[#71717A]",
           item.large ? "text-xl" : "",
-          isActive
-            ? "rounded-xl bg-[#2370AF] font-semibold text-white shadow-[0_3px_0_#205994]"
-            : "",
-          !isActive && !item.danger
-            ? "hover:rounded-xl hover:bg-[#5295CD] hover:font-semibold hover:text-white hover:shadow-[0_3px_0_#205994]"
-            : "",
+          isActive ? "rounded-xl bg-[#2370AF] font-semibold text-white shadow-[0_3px_0_#205994]" : "",
+          !isActive && !item.danger ? "hover:rounded-xl hover:bg-[#5295CD] hover:font-semibold hover:text-white hover:shadow-[0_3px_0_#205994]" : "",
         ]
           .filter(Boolean)
           .join(" ")}
       >
-        <img
-          src={item.icon}
-          alt=""
-          aria-hidden="true"
-          className="h-7 w-7 shrink-0"
-        />
+        <img src={item.icon} alt="" aria-hidden="true" className="h-7 w-7 shrink-0" />
         <span>{item.label}</span>
       </Link>
     </li>
@@ -104,14 +93,10 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="box-border flex min-h-screen w-[306px] shrink-0 flex-col gap-8 border-r border-[#E8E8E8] bg-white p-6">
+    <aside className="box-border fixed left-0 top-0 z-50 h-screen flex w-[306px] shrink-0 flex-col gap-8 border-r border-[#E8E8E8] bg-white p-8">
       {/* Logo */}
       <Link href="/dashboard" aria-label="Kabiru Web - Dashboard">
-        <img
-          src="/assets/logo.svg"
-          alt="Kabiru Web"
-          className="block h-[42px] w-[140px] object-contain"
-        />
+        <img src="/assets/logo.svg" alt="Kabiru Web" className="block h-[42px] w-[140px] object-contain" />
       </Link>
 
       {/* Navigasi utama dan navigasi akun */}

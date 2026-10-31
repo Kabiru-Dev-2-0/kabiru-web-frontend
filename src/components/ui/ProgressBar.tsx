@@ -4,40 +4,46 @@ import * as React from "react";
 
 export type ProgressBarSize = "sm" | "md" | "lg" | "xl";
 
-export type ProgressBarVariant =
-  | "primary"
-  | "success"
-  | "error"
-  | "warning"
-  | "disabled"
-  | "skeleton";
+export type ProgressBarVariant = "primary" | "success" | "error" | "warning" | "disabled" | "skeleton";
 
-export interface ProgressBarProps extends Omit<
-  React.HTMLAttributes<HTMLDivElement>,
-  "color"
-> {
+export interface ProgressBarProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "color"> {
   /** Ukuran ketebalan progress bar */
   size?: ProgressBarSize;
 
-  /** Warna progress bar */
+  /** Warna progress bar berdasarkan variant */
   variant?: ProgressBarVariant;
 
-  /** Nilai progress, dari 0 sampai 100 */
+  /** Custom warna progress bar */
+  color?: string;
+
+  /** Nilai progress bar, dari 0 sampai 100 */
   value?: number;
 
-  /** Teks persentase yang ditampilkan di bawah progress bar */
+  /** Menampilkan atau menyembunyikan teks persentase */
   showPercentage?: boolean;
 
-  /** Teks detail tambahan, misalnya "4/6" */
+  /** Teks persentase, misalnya "80%" */
+  percentageText?: string;
+
+  /** Teks tahapan, misalnya "1/5" atau "3/6" */
+  percentage?: string;
+
+  /** Custom class untuk teks persentase/tahapan */
+  percentageClassName?: string;
+
+  /** Custom style untuk teks persentase/tahapan */
+  percentageStyle?: React.CSSProperties;
+
+  /** Teks detail tambahan di bawah progress bar */
   detail?: string;
 
-  /** Menampilkan atau menyembunyikan detail di bawah progress bar */
+  /** Menampilkan atau menyembunyikan detail */
   showDetail?: boolean;
 
   /** Lebar progress bar, default 128px */
   width?: number | string;
 
-  /** Ukuran teks detail, default 4px mengikuti HTML referensi */
+  /** Ukuran teks detail, default 12px */
   detailFontSize?: number;
 
   /** Mode skeleton/loading */
@@ -57,28 +63,39 @@ const sizeHeights: Record<ProgressBarSize, string> = {
   sm: "2px",
   md: "4px",
   lg: "6px",
-  xl: "12px"
+  xl: "12px",
 };
 
 export function ProgressBar({
   size = "sm",
   variant = "primary",
+  color,
   value = 80,
   showPercentage = true,
+  percentageText,
+  percentage,
+  percentageClassName = "",
+  percentageStyle,
   detail,
   showDetail = true,
   width = 128,
-  detailFontSize = 4,
+  detailFontSize = 12,
   loading = false,
   className = "",
   style,
   ...props
 }: ProgressBarProps) {
   const normalizedValue = Math.min(100, Math.max(0, value));
+
   const isSkeleton = loading || variant === "skeleton";
-  const fillColor = variantColors[variant];
+
+  // Custom color memiliki prioritas dibandingkan warna variant.
+  const fillColor = color ?? variantColors[variant];
 
   const widthStyle = typeof width === "number" ? `${width}px` : width;
+
+  // Menentukan teks yang ditampilkan di kanan atas.
+  const displayPercentage = percentage ?? percentageText ?? `${normalizedValue}%`;
 
   return (
     <div
@@ -89,21 +106,31 @@ export function ProgressBar({
         ...style,
       }}
     >
+      {/* Teks persentase atau tahapan di kanan atas */}
+      {showPercentage && !isSkeleton && (
+        <div className="flex justify-end">
+          <span
+            className={percentageClassName}
+            style={{
+              fontSize: "12px",
+              fontWeight: 500,
+              color: "#606876",
+              ...percentageStyle,
+            }}
+          >
+            {displayPercentage}
+          </span>
+        </div>
+      )}
+
+      {/* Progress bar */}
       <div
         role={isSkeleton ? undefined : "progressbar"}
-        aria-label={
-          props["aria-label"] ?? (isSkeleton ? "Loading" : "Progress")
-        }
+        aria-label={props["aria-label"] ?? (isSkeleton ? "Loading" : "Progress")}
         aria-valuemin={isSkeleton ? undefined : 0}
         aria-valuemax={isSkeleton ? undefined : 100}
         aria-valuenow={isSkeleton ? undefined : normalizedValue}
-        aria-valuetext={
-          isSkeleton
-            ? undefined
-            : detail
-              ? `${normalizedValue}%, ${detail}`
-              : `${normalizedValue}%`
-        }
+        aria-valuetext={isSkeleton ? undefined : percentage ? `${percentage}, ${normalizedValue}%` : `${normalizedValue}%`}
         aria-busy={isSkeleton ? true : undefined}
         className="w-full overflow-hidden rounded-xl"
         style={{
@@ -115,18 +142,15 @@ export function ProgressBar({
           className="h-full rounded-xl transition-[width] duration-300 ease-in-out"
           style={{
             width: `${isSkeleton ? 100 : normalizedValue}%`,
-            backgroundColor: fillColor,
+            backgroundColor: isSkeleton ? variantColors.skeleton : fillColor,
           }}
         />
       </div>
 
-      {!isSkeleton && (showPercentage || (showDetail && detail)) && (
-        <div
-          className="flex items-start justify-between whitespace-nowrap font-normal leading-normal text-[#606876]"
-          style={{ fontSize: `${detailFontSize}px` }}
-        >
-          {showPercentage ? <span>{normalizedValue}%</span> : <span />}
-          {showDetail && detail ? <span>{detail}</span> : null}
+      {/* Detail tambahan di bawah progress bar */}
+      {!isSkeleton && showDetail && detail && (
+        <div className="text-[#606876] font-normal leading-normal" style={{ fontSize: `${detailFontSize}px` }}>
+          {detail}
         </div>
       )}
     </div>

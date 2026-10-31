@@ -1,23 +1,21 @@
 import Sidebar from "@/components/layout/Sidebar";
 import TopBar from "@/components/layout/TopBar";
 
-export default function LearnerLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function LearnerLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen bg-white">
-      {/* Sidebar di sebelah kiri */}
+    <div className="min-h-screen bg-white">
+      {/* Sidebar tetap di kiri */}
       <Sidebar />
 
-      {/* Area utama di sebelah kanan */}
-      <div className="flex min-w-0 flex-1 flex-col">
-        {/* TopBar berada di luar main dan tanpa padding konten */}
-        <TopBar />
+      {/* Area utama */}
+      <div className="ml-[306px] min-h-screen">
+        {/* TopBar tetap di atas */}
+        <div className="fixed left-[306px] right-0 top-0 z-40">
+          <TopBar />
+        </div>
 
-        {/* Konten halaman dengan padding 20px */}
-        <main className="min-w-0 flex-1 p-10">{children}</main>
+        {/* Hanya bagian konten yang bisa di-scroll */}
+        <main className="mt-[72px] h-full overflow-y-auto p-10">{children}</main>
       </div>
     </div>
   );

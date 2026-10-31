@@ -7,16 +7,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   shadow?: boolean;
 }
 
-export function Card({
-  padding = 20,
-  color = "#FFFFFF",
-  border = true,
-  shadow = false,
-  className = "",
-  style,
-  children,
-  ...props
-}: CardProps) {
+export function Card({ padding = 20, color = "#FFFFFF", border = true, shadow = false, className = "", style, children, ...props }: CardProps) {
   return (
     <div
       {...props}
@@ -25,14 +16,7 @@ export function Card({
         backgroundColor: color,
         ...style,
       }}
-      className={[
-        "rounded-lg",
-        border ? "border border-border-surface" : "border-0",
-        shadow ? "shadow-md" : "shadow-none",
-        className,
-      ]
-        .filter(Boolean)
-        .join(" ")}
+      className={["rounded-xl", border ? "border border-border-main" : "border-0", shadow ? "shadow-sm" : "shadow-none", className].filter(Boolean).join(" ")}
     >
       {children}
     </div>

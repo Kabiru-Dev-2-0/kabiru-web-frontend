@@ -2,28 +2,21 @@
 
 import React from "react";
 import ModuleHead from "./ModuleHead";
-import { ModuleData, T_ModuleHead } from "../../types/dashboard";
+import { ModuleData } from "../../types/dashboard";
+import { Card } from "../ui/Card";
 
 export interface ModuleItemProps {
-  /** Data modul yang datang langsung dari API response */
   data: ModuleData;
-  /** Dukungan backward compatibility untuk kode lama */
-  header?: T_ModuleHead;
-  /** Mengaktifkan ilustrasi maskot di sebelah kanan */
   illustration?: boolean | string;
-  /** Teks bubble balon bicara untuk ilustrasi */
   speechBubbleText?: string;
-  /** Emoji atau gambar maskot (default: '🤖') */
   illustrationIcon?: string;
-  /** Handler saat item diklik */
   onClick?: () => void;
   className?: string;
+  progressVariant?: "primary" | "success" | "warning" | "error" | "disabled";
+  progressColor?: string;
 }
 
-export default function ModuleItem({ data, header, illustration, speechBubbleText, illustrationIcon, onClick, className = "" }: ModuleItemProps) {
-  // Normalisasi data dari prop `data` atau `header`
-  const moduleData = data ?? header;
-
+export default function ModuleItem({ data, illustration, speechBubbleText, illustrationIcon, onClick, className = "", progressVariant = "warning", progressColor }: ModuleItemProps) {
   const hasIllustration = Boolean(illustration) || Boolean(data?.showIllustration);
 
   const bubbleContent = speechBubbleText ?? data?.speechBubbleText ?? "Aku ingin mengenal lebih dalam tentang AI";
@@ -31,19 +24,26 @@ export default function ModuleItem({ data, header, illustration, speechBubbleTex
   const iconContent = (typeof illustration === "string" ? illustration : undefined) ?? illustrationIcon ?? data?.illustrationIcon ?? "🤖";
 
   return (
-    <div
+    <Card
+      padding={24}
+      color="#FFFFFF"
+      border={false}
+      shadow
       onClick={onClick}
-      className={`bg-white p-6 rounded-xl border color-border-main shadow-sm flex items-center justify-between gap-4 transition-all hover:border-primary-default 
-        ${onClick ? "cursor-pointer" : ""} ${className}`.trim()}
+      className={`flex shadow-lg items-center justify-between gap-4 transition-all
+        ${onClick ? "cursor-pointer hover:border-primary-default" : ""}
+        ${className}
+      `.trim()}
     >
-      <ModuleHead data={moduleData} />
+      <ModuleHead data={data} progressVariant={progressVariant} progressColor={progressColor} />
 
       {hasIllustration && (
         <div className="shrink-0 flex flex-col items-center">
           <div className="bg-primary-default text-white text-small px-3 py-1.5 rounded-xl max-w-40 text-center mb-2 font-medium shadow-sm">{bubbleContent}</div>
+
           <div className="text-5xl select-none">{iconContent}</div>
         </div>
       )}
-    </div>
+    </Card>
   );
 }
