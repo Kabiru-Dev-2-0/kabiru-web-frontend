@@ -4,7 +4,7 @@ import * as React from "react";
 
 export type ProgressBarSize = "sm" | "md" | "lg" | "xl";
 
-export type ProgressBarVariant = "primary" | "success" | "error" | "warning" | "disabled" | "skeleton";
+export type ProgressBarVariant = "primary" | "success" | "error" | "warning" | "disabled" | "skeleton" | "progress";
 
 export interface ProgressBarProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "color"> {
   /** Ukuran ketebalan progress bar */
@@ -57,13 +57,14 @@ const variantColors: Record<ProgressBarVariant, string> = {
   warning: "#FF6900",
   disabled: "#6A7282",
   skeleton: "#F0F1F3",
+  progress: "#F5A524",
 };
 
 const sizeHeights: Record<ProgressBarSize, string> = {
   sm: "2px",
   md: "4px",
   lg: "6px",
-  xl: "12px",
+  xl: "16px",
 };
 
 export function ProgressBar({
