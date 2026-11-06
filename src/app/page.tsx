@@ -18,14 +18,7 @@ import { SelectField } from "@/components/ui/SelectField";
 import { Stepper } from "@/components/ui/Stepper";
 import { SwitchButton } from "@/components/ui/SwitchButton";
 import Tooltip from "@/components/ui/ToolTip";
-import {
-  ArrowRight,
-  Search,
-  House,
-  BookOpen,
-  Code2,
-  ChevronDown,
-} from "lucide-react";
+import { ArrowRight, Search, House, BookOpen, Code2, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import DialogConfirmation from "@/components/ui/DialogConfirmation";
 import Link from "next/link";
@@ -148,10 +141,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col flex-1 p-20 gap-8 bg-zinc-50 font-sans ">
-      <Link
-        href="/dashboard"
-        className="inline-flex items-center justify-center rounded-lg bg-[#277BC0] px-6 py-3 font-medium text-white transition-colors hover:bg-[#2370AF]"
-      >
+      <Link href="/dashboard" className="inline-flex items-center justify-center rounded-lg bg-[#277BC0] px-6 py-3 font-medium text-white transition-colors hover:bg-[#2370AF]">
         Masuk ke Halaman Learner
       </Link>
 
@@ -175,12 +165,7 @@ export default function Home() {
       </div>
 
       <div className="flex items-center gap-4">
-        <Checkbox
-          variant="primary"
-          size="sm"
-          aria-label="Small checkbox"
-          defaultChecked
-        />
+        <Checkbox variant="primary" size="sm" aria-label="Small checkbox" defaultChecked />
         <Checkbox variant="success" size="sm" aria-label="Medium checkbox" />
         <Checkbox variant="error" size="lg" aria-label="Small checkbox" />
       </div>
@@ -194,44 +179,16 @@ export default function Home() {
 
       <Card padding={24} color="#F0F1F3" border={true} shadow>
         <h2 className="text-heading font-semibold">Studi Kasus</h2>
-        <p className="mt-2 text-paragraph">
-          Selesaikan studi kasus setelah mempelajari materi.
-        </p>
+        <p className="mt-2 text-paragraph">Selesaikan studi kasus setelah mempelajari materi.</p>
       </Card>
 
-      <InputField
-        requiredMark
-        label="Cari materi"
-        placeholder="Cari..."
-        icon={<Search size={18} />}
-        iconPosition="left"
-      />
-      <InputField
-        label="Nama materi"
-        state="error"
-        defaultValue="$#@!"
-        errorMessage="Error message"
-      />
-      <InputField
-        label="Nama materi"
-        state="disabled"
-        placeholder="Input tidak tersedia"
-      />
+      <InputField requiredMark label="Cari materi" placeholder="Cari..." icon={<Search size={18} />} iconPosition="left" />
+      <InputField label="Nama materi" state="error" defaultValue="$#@!" errorMessage="Error message" />
+      <InputField label="Nama materi" state="disabled" placeholder="Input tidak tersedia" />
 
-      <SelectField
-        label="SelectTextField"
-        requiredMark
-        placeholder="Select Text"
-        groupLabel="LabelTextField"
-        options={options}
-      />
+      <SelectField label="SelectTextField" requiredMark placeholder="Select Text" groupLabel="LabelTextField" options={options} />
 
-      <SelectField
-        label="Kategori Materi"
-        placeholder="Pilihan tidak tersedia"
-        options={options}
-        disabled
-      />
+      <SelectField label="Kategori Materi" placeholder="Pilihan tidak tersedia" options={options} disabled />
 
       <SelectField label="Ukuran kecil" options={options} selectSize="sm" />
 
@@ -242,19 +199,9 @@ export default function Home() {
       <div className="flex items-center gap-4">
         <SwitchButton size="sm" variant="basic" aria-label="Switch basic" />
 
-        <SwitchButton
-          size="md"
-          variant="primary"
-          defaultChecked
-          aria-label="Switch primary"
-        />
+        <SwitchButton size="md" variant="primary" defaultChecked aria-label="Switch primary" />
 
-        <SwitchButton
-          size="lg"
-          variant="success"
-          defaultChecked
-          aria-label="Switch success"
-        />
+        <SwitchButton size="lg" variant="success" defaultChecked aria-label="Switch success" />
       </div>
       <div className="flex flex-col gap-6">
         <ProgressBar variant="primary" value={80} detail="4/6" />
@@ -264,13 +211,7 @@ export default function Home() {
         <ProgressBar variant="skeleton" size="lg" />
       </div>
 
-      <Breadcrumbs
-        items={[
-          { label: "First Item", href: "/first" },
-          { label: "Second Item", href: "/second" },
-          { label: "Third Item" },
-        ]}
-      />
+      <Breadcrumbs items={[{ label: "First Item", href: "/first" }, { label: "Second Item", href: "/second" }, { label: "Third Item" }]} />
       <Breadcrumbs
         showIcons
         items={[
@@ -284,11 +225,7 @@ export default function Home() {
         highlightCurrentBackground
         background="white"
         currentBackground="gray-200"
-        items={[
-          { label: "Beranda", href: "/" },
-          { label: "Practice", href: "/practice" },
-          { label: "Algoritma" },
-        ]}
+        items={[{ label: "Beranda", href: "/" }, { label: "Practice", href: "/practice" }, { label: "Algoritma" }]}
       />
 
       <div className="flex flex-wrap items-center gap-3">
@@ -307,12 +244,7 @@ export default function Home() {
         <ProgressTracker value={100} variant="donut" />
       </div>
 
-      <DataTable
-        columns={columns}
-        data={materials}
-        caption="Daftar materi pembelajaran"
-        borderRadius="lg"
-      />
+      <DataTable columns={columns} data={materials} caption="Daftar materi pembelajaran" borderRadius="lg" />
 
       <DataTable
         columns={columns}
@@ -331,17 +263,7 @@ export default function Home() {
         <Stepper totalSteps={10} />
       </div>
 
-      <Stepper
-        totalSteps={5}
-        defaultValue={2}
-        activeColor="#277BC0"
-        inactiveColor="#E5E5E5"
-        navSize={24}
-        trackHeight={8}
-        trackGap={12}
-        navGap={20}
-        trackRadius="9999px"
-      />
+      <Stepper totalSteps={5} defaultValue={2} activeColor="#277BC0" inactiveColor="#E5E5E5" navSize={24} trackHeight={8} trackGap={12} navGap={20} trackRadius="9999px" />
 
       <div className="flex flex-wrap items-center gap-3">
         {/* Solid */}
@@ -374,19 +296,11 @@ export default function Home() {
       </div>
 
       <div className="inline-flex flex-col gap-8  p-5">
-        <Alert
-          variant="success"
-          title="Lorem ipsum"
-          description="lorem ipsum"
-        />
+        <Alert variant="success" title="Lorem ipsum" description="lorem ipsum" />
 
         <Alert variant="fail" title="Lorem ipsum" description="lorem ipsum" />
 
-        <Alert
-          variant="warning"
-          title="Lorem ipsum"
-          description="lorem ipsum"
-        />
+        <Alert variant="warning" title="Lorem ipsum" description="lorem ipsum" />
 
         <Alert variant="help" title="Lorem ipsum" description="lorem ipsum" />
 
@@ -409,18 +323,9 @@ export default function Home() {
       </div>
 
       <div className="flex flex-wrap items-center gap-12 p-6">
-        <LessonButton
-          status="done"
-          ariaLabel="Pelajaran 1 selesai"
-          onClick={() => console.log("Buka pelajaran 1")}
-        />
+        <LessonButton status="done" ariaLabel="Pelajaran 1 selesai" onClick={() => console.log("Buka pelajaran 1")} />
 
-        <LessonButton
-          status="current"
-          number={0}
-          ariaLabel="Pelajaran 2, saat ini"
-          onClick={() => console.log("Buka pelajaran 2")}
-        />
+        <LessonButton status="current" number={0} ariaLabel="Pelajaran 2, saat ini" onClick={() => console.log("Buka pelajaran 2")} />
 
         <LessonButton status="locked" ariaLabel="Pelajaran 3 terkunci" />
 
@@ -429,39 +334,19 @@ export default function Home() {
 
       <div className="flex gap-4">
         <Tooltip content="Tooltips">
-          <button className="rounded-lg bg-primary-default px-4 py-2 text-white">
-            Hover saya
-          </button>
+          <button className="rounded-lg bg-primary-default px-4 py-2 text-white">Hover saya</button>
         </Tooltip>
 
-        <Tooltip
-          content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-          placement="top"
-          theme="default"
-          size="big"
-        >
-          <button className="rounded-lg bg-primary-default px-4 py-2 text-white">
-            Informasi
-          </button>
+        <Tooltip content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." placement="top" theme="default" size="big">
+          <button className="rounded-lg bg-primary-default px-4 py-2 text-white">Informasi</button>
         </Tooltip>
 
-        <Tooltip
-          content="Keterangan tambahan untuk elemen ini."
-          placement="bottom"
-          theme="light"
-          size="small"
-        >
-          <button className="rounded-lg border border-primary-default px-4 py-2 text-primary-default">
-            Lihat keterangan
-          </button>
+        <Tooltip content="Keterangan tambahan untuk elemen ini." placement="bottom" theme="light" size="small">
+          <button className="rounded-lg border border-primary-default px-4 py-2 text-primary-default">Lihat keterangan</button>
         </Tooltip>
       </div>
 
-      <button
-        type="button"
-        onClick={() => setIsOpen(true)}
-        className="w-100 rounded-lg bg-primary-default px-4 py-2 text-white"
-      >
+      <button type="button" onClick={() => setIsOpen(true)} className="w-100 rounded-lg bg-primary-default px-4 py-2 text-white">
         Buka Dialog
       </button>
 
@@ -479,10 +364,7 @@ export default function Home() {
         confirmText="Ya"
       /> */}
 
-      <button
-        onClick={() => setIsOpen(true)}
-        className="bg-primary-default text-white"
-      >
+      <button onClick={() => setIsOpen(true)} className="bg-primary-default text-white">
         Hapus Materi
       </button>
 
@@ -518,19 +400,11 @@ export default function Home() {
       /> */}
 
       <div className="mx-auto max-w-xl rounded-xl bg-white p-6 shadow-sm">
-        <h1 className="mb-2 text-xl font-semibold text-zinc-700">
-          Demo Dialog Confirmation
-        </h1>
+        <h1 className="mb-2 text-xl font-semibold text-zinc-700">Demo Dialog Confirmation</h1>
 
-        <p className="mb-6 text-sm text-gray-500">
-          Contoh penggunaan dialog konfirmasi untuk menyimpan perubahan.
-        </p>
+        <p className="mb-6 text-sm text-gray-500">Contoh penggunaan dialog konfirmasi untuk menyimpan perubahan.</p>
 
-        <button
-          type="button"
-          onClick={handleOpenDialog}
-          className="rounded-lg bg-primary-default px-5 py-3 text-sm font-semibold text-white transition-colors hover:opacity-90"
-        >
+        <button type="button" onClick={handleOpenDialog} className="rounded-lg bg-primary-default px-5 py-3 text-sm font-semibold text-white transition-colors hover:opacity-90">
           Simpan Perubahan
         </button>
 

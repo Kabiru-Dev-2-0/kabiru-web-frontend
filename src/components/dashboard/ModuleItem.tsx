@@ -30,7 +30,7 @@ export default function ModuleItem({ data, illustration, speechBubbleText, illus
       border={false}
       shadow
       onClick={onClick}
-      className={`flex shadow-lg items-center justify-between gap-4 transition-all
+      className={`flex shadow-lg shadow-border-surface items-center justify-between gap-4 transition-all
         ${onClick ? "cursor-pointer hover:border-primary-default" : ""}
         ${className}
       `.trim()}

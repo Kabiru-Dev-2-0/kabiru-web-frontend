@@ -17,40 +17,30 @@ type LessonButtonProps = {
   className?: string;
 };
 
-const statusColors: Record<LessonButtonStatus, { top: string; side: string }> =
-  {
-    done: {
-      top: "#2B7BC4",
-      side: "#1D5A93",
-    },
-    current: {
-      top: "#E8A000",
-      side: "#B47D00",
-    },
-    locked: {
-      top: "#8A90A0",
-      side: "#636A7B",
-    },
-    skeleton: {
-      top: "#EEF0F3",
-      side: "#EEF0F3",
-    },
-  };
+const statusColors: Record<LessonButtonStatus, { top: string; side: string }> = {
+  done: {
+    top: "#2B7BC4",
+    side: "#1D5A93",
+  },
+  current: {
+    top: "#E8A000",
+    side: "#B47D00",
+  },
+  locked: {
+    top: "#8A90A0",
+    side: "#636A7B",
+  },
+  skeleton: {
+    top: "#EEF0F3",
+    side: "#EEF0F3",
+  },
+};
 
 const hexagonPath = "M40 7 L69 24 L69 60 L40 77 L11 60 L11 24 Z";
 
-export function LessonButton({
-  status = "current",
-  number = 0,
-  size = 80,
-  onClick,
-  ariaLabel,
-  topColor,
-  sideColor,
-  icon,
-  className = "",
-}: LessonButtonProps) {
+export function LessonButton({ status = "current", number = 0, size = 80, onClick, ariaLabel, topColor, sideColor, icon, className = "" }: LessonButtonProps) {
   const colors = statusColors[status];
+
   const isLocked = status === "locked";
   const isSkeleton = status === "skeleton";
   const isDone = status === "done";
@@ -74,78 +64,30 @@ export function LessonButton({
     fontSize: size * 0.3,
     lineHeight: 1,
     WebkitTapHighlightColor: "transparent",
-    ...({
-      "--lesson-top": topColor ?? colors.top,
-      "--lesson-side": sideColor ?? colors.side,
-    } as CSSProperties),
-  };
+    "--lesson-top": topColor ?? colors.top,
+    "--lesson-side": sideColor ?? colors.side,
+  } as CSSProperties;
 
-  const label =
-    ariaLabel ??
-    (isDone
-      ? "Pelajaran selesai"
-      : isCurrent
-        ? `Pelajaran ${number}, saat ini`
-        : isLocked
-          ? "Pelajaran terkunci"
-          : "Memuat pelajaran");
+  const label = ariaLabel ?? (isDone ? "Pelajaran selesai" : isCurrent ? `Pelajaran ${number}, saat ini` : isLocked ? "Pelajaran terkunci" : "Memuat pelajaran");
 
   const content = (
     <>
-      <svg
-        className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
-        viewBox="0 0 80 84"
-        fill="none"
-        aria-hidden="true"
-      >
-        {!isSkeleton && (
-          <path
-            d={hexagonPath}
-            transform="translate(0 4)"
-            fill="var(--lesson-side)"
-            stroke="var(--lesson-side)"
-            strokeWidth="6"
-            strokeLinejoin="round"
-          />
-        )}
+      <svg className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 80 84" fill="none" aria-hidden="true">
+        {!isSkeleton && <path d={hexagonPath} transform="translate(0 4)" fill="var(--lesson-side)" stroke="var(--lesson-side)" strokeWidth="6" strokeLinejoin="round" />}
 
-        <path
-          className={!isSkeleton ? "lesson-button-top" : undefined}
-          d={hexagonPath}
-          fill="var(--lesson-top)"
-          stroke="var(--lesson-top)"
-          strokeWidth="6"
-          strokeLinejoin="round"
-        />
+        <path className={!isSkeleton ? "lesson-button-top" : undefined} d={hexagonPath} fill="var(--lesson-top)" stroke="var(--lesson-top)" strokeWidth="6" strokeLinejoin="round" />
       </svg>
 
       {!isSkeleton && (
         <span className="relative flex items-center justify-center">
           {icon ??
-            (isDone ? (
-              <Check size={size * 0.4} strokeWidth={4.5} aria-hidden="true" />
-            ) : isLocked ? (
-              <LockKeyhole
-                size={size * 0.4}
-                strokeWidth={2.5}
-                color="#FFFFFF"
-                aria-hidden="true"
-              />
-            ) : (
-              number
-            ))}
+            (isDone ? <Check size={size * 0.4} strokeWidth={4.5} aria-hidden="true" /> : isLocked ? <LockKeyhole size={size * 0.4} strokeWidth={2.5} color="#FFFFFF" aria-hidden="true" /> : number)}
         </span>
       )}
     </>
   );
 
-  const sharedClassName = [
-    "lesson-button",
-    `lesson-button--${status}`,
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const sharedClassName = ["lesson-button", `lesson-button--${status}`, className].filter(Boolean).join(" ");
 
   if (isSkeleton) {
     return (
@@ -158,7 +100,10 @@ export function LessonButton({
   return (
     <button
       type="button"
-      className={sharedClassName}
+      className={[sharedClassName, "transition-transform duration-100 ease-out", !isLocked && ["hover:scale-[0.92]", "active:translate-y-1", "active:scale-[0.92]"], isLocked && "cursor-not-allowed"]
+        .flat()
+        .filter(Boolean)
+        .join(" ")}
       style={style}
       onClick={isLocked ? undefined : onClick}
       disabled={isLocked}
