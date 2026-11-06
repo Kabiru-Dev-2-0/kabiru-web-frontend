@@ -7,10 +7,8 @@ import { JourneySectionProps } from "@/types/learningJourney";
 export default function JourneySection({ data, selectedNodeId, onNodeSelect, onNodeClick }: JourneySectionProps) {
   const { headingHeight, nodeSpacing, horizontalPattern } = learningJourneyLayout;
 
-  // Menghitung tinggi area node berdasarkan jumlah materi.
   const nodeAreaHeight = data.nodes.length * nodeSpacing;
 
-  // Total tinggi section termasuk heading.
   const sectionHeight = headingHeight + nodeAreaHeight;
 
   return (
@@ -28,10 +26,8 @@ export default function JourneySection({ data, selectedNodeId, onNodeSelect, onN
             height: `${headingHeight}px`,
           }}
         >
-          {/* Garis pembatas */}
           <div className="absolute inset-x-0 top-1/2 h-[2px] -translate-y-1/2 bg-primary-default" />
 
-          {/* Judul bagian */}
           <div className="relative z-10 max-w-[260px] bg-white px-4 text-center">
             <p className="text-small font-normal text-text-paragraph-75">{data.section}</p>
 
@@ -45,17 +41,19 @@ export default function JourneySection({ data, selectedNodeId, onNodeSelect, onN
 
           const y = headingHeight + index * nodeSpacing + nodeSpacing / 2;
 
+          const isSelected = String(selectedNodeId) === String(node.id);
+
           return (
             <div
               key={node.id}
-              className="absolute z-10"
+              className={`absolute ${isSelected ? "z-[1000]" : "z-10"}`}
               style={{
                 left: `${x}%`,
                 top: `${y}px`,
                 transform: "translate(-50%, -50%)",
               }}
             >
-              <JourneyNode data={node} isOpen={selectedNodeId === node.id} onSelect={onNodeSelect} onClick={onNodeClick} />
+              <JourneyNode data={node} isOpen={isSelected} onSelect={onNodeSelect} onClick={onNodeClick} />
             </div>
           );
         })}

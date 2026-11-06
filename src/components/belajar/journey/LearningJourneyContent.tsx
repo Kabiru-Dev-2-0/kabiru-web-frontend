@@ -11,18 +11,13 @@ import type { LearningJourneyContentProps } from "@/types/learningJourney";
 export default function LearningJourneyContent({ data, onNodeClick }: LearningJourneyContentProps) {
   const router = useRouter();
 
-  // Pastikan sections selalu berupa array.
   const sections = data?.sections ?? [];
 
-  // Section yang sedang aktif.
-  const [activeSectionId, setActiveSectionId] = useState<string | number | null>(sections[0]?.id ?? null);
+  const [activeSectionId, setActiveSectionId] = useState<string | number | null>(data.sectionId);
 
-  // Node yang sedang dipilih untuk menampilkan BubbleChat.
   const [selectedNodeId, setSelectedNodeId] = useState<string | number | null>(null);
 
-  /**
-   * Sinkronisasi active section ketika data berubah.
-   */
+  // Sinkronisasi section aktif.
   useEffect(() => {
     if (sections.length === 0) {
       setActiveSectionId(null);
@@ -37,16 +32,14 @@ export default function LearningJourneyContent({ data, onNodeClick }: LearningJo
     });
   }, [sections]);
 
-  /**
-   * Mengambil section yang sedang aktif.
-   */
-  const activeSection = useMemo(() => {
-    return sections.find((section) => String(section.id) === String(activeSectionId)) ?? sections[0];
-  }, [sections, activeSectionId]);
+  const activeSection = sections.find((section) => String(section.id) === String(activeSectionId));
 
-  /**
-   * Menghitung progress seluruh materi.
-   */
+  // Mengambil section aktif.
+  // const activeSection = useMemo(() => {
+  //   return sections.find((section) => String(section.id) === String(activeSectionId)) ?? sections[0];
+  // }, [sections, activeSectionId]);
+
+  // Menghitung progress seluruh journey.
   const progress = useMemo(() => {
     const allNodes = sections.flatMap((section) => section.nodes ?? []);
 
@@ -57,9 +50,45 @@ export default function LearningJourneyContent({ data, onNodeClick }: LearningJo
     return Math.round((completedNodes / allNodes.length) * 100);
   }, [sections]);
 
-  /**
-   * Memantau section yang sedang terlihat.
-   */
+  // Navigasi menuju section berdasarkan URL hash.
+  useEffect(() => {
+    if (sections.length === 0) return;
+
+    const hash = window.location.hash;
+
+    if (!hash) return;
+
+    const targetId = decodeURIComponent(hash.substring(1));
+
+    const targetSection = sections.find((section) => `journey-section-${section.id}` === targetId);
+
+    if (!targetSection) {
+      console.warn("Journey section tidak ditemukan:", targetId);
+      return;
+    }
+
+    setActiveSectionId(targetSection.id);
+
+    const animationFrame = window.requestAnimationFrame(() => {
+      const targetElement = document.getElementById(targetId);
+
+      if (!targetElement) {
+        console.warn("Element tujuan tidak ditemukan:", targetId);
+        return;
+      }
+
+      targetElement.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+    };
+  }, [data.sectionId, sections]);
+
+  // Memantau section yang sedang terlihat.
   useEffect(() => {
     if (sections.length === 0) return;
 
@@ -73,15 +102,15 @@ export default function LearningJourneyContent({ data, onNodeClick }: LearningJo
 
         const currentSection = visibleSections[0];
 
-        if (currentSection) {
-          const target = currentSection.target as HTMLElement;
-          const sectionId = target.dataset.journeySection;
+        if (!currentSection) return;
 
-          const matchedSection = data.sections.find((section) => String(section.id) === sectionId);
+        const target = currentSection.target as HTMLElement;
+        const sectionId = target.dataset.journeySection;
 
-          if (matchedSection) {
-            setActiveSectionId(matchedSection.id);
-          }
+        const matchedSection = sections.find((section) => String(section.id) === sectionId);
+
+        if (matchedSection) {
+          setActiveSectionId(matchedSection.id);
         }
       },
       {
@@ -100,17 +129,12 @@ export default function LearningJourneyContent({ data, onNodeClick }: LearningJo
     };
   }, [sections]);
 
-  /**
-   * Memilih node untuk menampilkan BubbleChat.
-   * Klik node yang sama akan menutup BubbleChat.
-   */
+  // Memilih node untuk membuka popup.
   const handleNodeSelect = useCallback((id: string | number) => {
     setSelectedNodeId((currentId) => (String(currentId) === String(id) ? null : id));
   }, []);
 
-  /**
-   * Aksi ketika tombol Mulai ditekan.
-   */
+  // Aksi tombol Mulai.
   const handleNodeClick = useCallback(
     (id: string | number) => {
       setSelectedNodeId(null);
@@ -121,16 +145,16 @@ export default function LearningJourneyContent({ data, onNodeClick }: LearningJo
 
   return (
     <div className="relative flex flex-col gap-6">
-      {/* Header section aktif */}
+      {/* Sticky Header */}
       {activeSection && (
-        <div className="sticky top-4 z-40">
+        <div className="fixed right-10 z-[1000] flex w-full justify-center">
           <LearningJourneyHeader activeSection={activeSection} progress={progress} onBack={() => router.back()} />
         </div>
       )}
 
-      {/* Journey Sections */}
+      {/* Seluruh Journey Sections */}
       {sections.length > 0 ? (
-        <div className="relative flex flex-col gap-4 overflow-visible">
+        <div className="relative mt-24 flex flex-col gap-4 overflow-visible">
           {sections.map((section) => (
             <JourneySection key={section.id} data={section} selectedNodeId={selectedNodeId} onNodeSelect={handleNodeSelect} onNodeClick={handleNodeClick} />
           ))}

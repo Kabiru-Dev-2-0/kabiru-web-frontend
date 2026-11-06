@@ -5,25 +5,21 @@ import { dashboardData } from "@/data";
 import { learningJourneyData } from "@/data/learningJourneyData";
 
 interface LearningJourneyPageProps {
-  params: Promise<{
-    materialId: string;
-  }>;
+  params: Promise<{ sectionId: string }>;
 }
 
 export default async function LearningJourneyPage({ params }: LearningJourneyPageProps) {
-  const { materialId } = await params;
+  const { sectionId } = await params;
 
-  // Sementara menggunakan satu data dummy.
-  // Nantinya ambil data journey berdasarkan materialId dari API.
   const journeyData = {
     ...learningJourneyData,
-    materialId,
+    sectionId: sectionId,
   };
 
   return (
     <div className="grid grid-cols-12 gap-8">
       <div className="col-span-12 space-y-12 xl:col-span-8">
-        <LearningJourneyContent data={journeyData} />
+        <LearningJourneyContent key={sectionId} data={journeyData} />
       </div>
 
       <div className="col-span-12 xl:col-span-4">

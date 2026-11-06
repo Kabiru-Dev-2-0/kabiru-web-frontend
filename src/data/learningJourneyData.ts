@@ -1,7 +1,7 @@
 import type { LearningJourneyData } from "@/types/learningJourney";
 
 export const learningJourneyData: LearningJourneyData = {
-  materialId: "1",
+  sectionId: "bagian-1",
 
   sections: [
     {

@@ -16,10 +16,9 @@ export default function LearningJourneyHeader({ activeSection, progress = 25, on
       shadow
       padding={16}
       className="
-        fixed mt-6 top-20 w-[750px] z-30
+        w-full max-w-[750px]
         flex items-center gap-4
-        border-none shadow-border-surface
-        shadow-lg
+        border-none shadow-border-surface shadow-lg
       "
     >
       <button type="button" onClick={onBack} aria-label="Kembali" className="shrink-0 text-primary-default transition-transform hover:scale-90">

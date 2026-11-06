@@ -8,6 +8,7 @@ export interface LearningModuleData {
 
 export interface LearningMaterialData {
   id: string | number;
+  sectionId: string;
   section: string;
   title: string;
   completed: boolean;

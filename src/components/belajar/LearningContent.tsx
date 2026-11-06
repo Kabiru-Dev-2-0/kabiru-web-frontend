@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { useRouter } from "next/navigation";
 
 import LearningModuleHeader from "./LearningModuleHeader";
@@ -12,17 +11,15 @@ export default function LearningContent() {
   const router = useRouter();
 
   const handleMaterialAction = (id: string | number) => {
-    const material = learningMaterialsData.find((item) => item.id === id);
+    const material = learningMaterialsData.find((item) => String(item.id) === String(id));
 
-    if (!material) return;
+    if (!material || material.locked) return;
 
-    // Arahkan ke halaman learning journey berdasarkan ID materi
-    router.push(`/belajar/${material.id}`);
+    router.push(`/belajar/${material.sectionId}#journey-section-${material.sectionId}`);
   };
 
   return (
     <div className="space-y-5">
-      {/* Header Modul */}
       <LearningModuleHeader
         {...learningModuleData}
         onBack={() => router.back()}
@@ -31,7 +28,6 @@ export default function LearningContent() {
         }}
       />
 
-      {/* Daftar Materi */}
       <div className="space-y-4">
         {learningMaterialsData.map((material) => (
           <LearningMaterialCard key={material.id} data={material} onAction={handleMaterialAction} />

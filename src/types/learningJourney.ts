@@ -15,7 +15,7 @@ export interface JourneySectionData {
 }
 
 export interface LearningJourneyData {
-  materialId: string;
+  sectionId: string;
   sections: JourneySectionData[];
 }
 

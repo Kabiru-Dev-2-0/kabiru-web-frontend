@@ -26,7 +26,7 @@ export default function JourneyNode({ data, isOpen = false, onSelect, onClick }:
   const bubbleVariant = isCompleted ? "primary" : "warning";
 
   return (
-    <div className={["relative flex flex-col items-center", isOpen ? "z-50" : "z-10"].join(" ")}>
+    <div className="relative flex flex-col items-center">
       {/* Lesson Node */}
       <LessonButton
         status={statusMap[data.status]}
@@ -40,10 +40,17 @@ export default function JourneyNode({ data, isOpen = false, onSelect, onClick }:
         }}
       />
 
-      {/* Popup hanya muncul ketika node dipilih dan tidak terkunci */}
+      {/* Popup hanya muncul jika node dipilih dan tidak terkunci */}
       {isOpen && !isLocked && (
-        <div className="absolute left-1/2 top-[calc(100%+14px)] z-50 w-[376px] max-w-[calc(100vw-40px)] -translate-x-1/2">
-          <ChatBubble placement="bottom" variant={bubbleVariant} size="large">
+        <div
+          className="
+            absolute left-1/2 top-[calc(100%+14px)]
+            z-[9999]
+            w-[376px] max-w-[calc(100vw-40px)]
+            -translate-x-1/2
+          "
+        >
+          <ChatBubble placement="bottom" variant={bubbleVariant} size="large" className="min-w-[236px]">
             <div className="flex flex-col gap-5">
               <div className="flex flex-col gap-0.5 text-white">
                 <p className="text-small">Unit {data.id}</p>
