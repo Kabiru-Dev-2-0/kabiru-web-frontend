@@ -23,6 +23,9 @@ import Image from "next/image";
 import DialogConfirmation from "@/components/ui/DialogConfirmation";
 import Link from "next/link";
 
+import { AIAgent } from "@/components/ai/AiAgent";
+import { MOCK_QUESTION, getMockStatus, mockRequestHint } from "@/data/aiAgentMock";
+
 const options = [
   { label: "Select Option 1", value: "option-1" },
   { label: "Select Option 2", value: "option-2" },
@@ -90,6 +93,12 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
 
+  const [isAgentOpen, setIsAgentOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [wrongAttempts] = useState(0);
+  const [isSolved] = useState(false);
+  const [isSubmitting] = useState(false);
+
   const handleConfirm = () => {
     console.log("Input:", input);
     setIsOpen(false);
@@ -118,7 +127,6 @@ export default function Home() {
   };
 
   // Menjalankan proses ketika tombol Simpan ditekan.
-
   const handleSubmit = async () => {
     if (isSaving) return;
 
@@ -140,12 +148,13 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col flex-1 p-20 gap-8 bg-zinc-50 font-sans ">
+    <div className="flex flex-col flex-1 p-20 gap-8 bg-zinc-50 font-sans relative min-h-screen">
       <Link href="/dashboard" className="inline-flex items-center justify-center rounded-lg bg-[#277BC0] px-6 py-3 font-medium text-white transition-colors hover:bg-[#2370AF]">
         Masuk ke Halaman Learner
       </Link>
 
       <p className="text-display-1 text-primary-default">halo dunia</p>
+      
       <div className="flex gap-4">
         <Button variant="primary" rightIcon={<ArrowRight size={16} />}>
           Lanjutkan
@@ -191,18 +200,15 @@ export default function Home() {
       <SelectField label="Kategori Materi" placeholder="Pilihan tidak tersedia" options={options} disabled />
 
       <SelectField label="Ukuran kecil" options={options} selectSize="sm" />
-
       <SelectField label="Ukuran sedang" options={options} selectSize="md" />
-
       <SelectField label="Ukuran besar" options={options} selectSize="lg" />
 
       <div className="flex items-center gap-4">
         <SwitchButton size="sm" variant="basic" aria-label="Switch basic" />
-
         <SwitchButton size="md" variant="primary" defaultChecked aria-label="Switch primary" />
-
         <SwitchButton size="lg" variant="success" defaultChecked aria-label="Switch success" />
       </div>
+      
       <div className="flex flex-col gap-6">
         <ProgressBar variant="primary" value={80} detail="4/6" />
         <ProgressBar variant="success" size="md" value={60} detail="3/5" />
@@ -297,13 +303,10 @@ export default function Home() {
 
       <div className="inline-flex flex-col gap-8  p-5">
         <Alert variant="success" title="Lorem ipsum" description="lorem ipsum" />
-
         <Alert variant="fail" title="Lorem ipsum" description="lorem ipsum" />
-
         <Alert variant="warning" title="Lorem ipsum" description="lorem ipsum" />
-
         <Alert variant="help" title="Lorem ipsum" description="lorem ipsum" />
-
+        
         <Alert
           variant="success"
           title="Materi berhasil disimpan"
@@ -324,11 +327,8 @@ export default function Home() {
 
       <div className="flex flex-wrap items-center gap-12 p-6">
         <LessonButton status="done" ariaLabel="Pelajaran 1 selesai" onClick={() => console.log("Buka pelajaran 1")} />
-
         <LessonButton status="current" number={0} ariaLabel="Pelajaran 2, saat ini" onClick={() => console.log("Buka pelajaran 2")} />
-
         <LessonButton status="locked" ariaLabel="Pelajaran 3 terkunci" />
-
         <LessonButton status="skeleton" />
       </div>
 
@@ -336,11 +336,9 @@ export default function Home() {
         <Tooltip content="Tooltips">
           <button className="rounded-lg bg-primary-default px-4 py-2 text-white">Hover saya</button>
         </Tooltip>
-
         <Tooltip content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." placement="top" theme="default" size="big">
           <button className="rounded-lg bg-primary-default px-4 py-2 text-white">Informasi</button>
         </Tooltip>
-
         <Tooltip content="Keterangan tambahan untuk elemen ini." placement="bottom" theme="light" size="small">
           <button className="rounded-lg border border-primary-default px-4 py-2 text-primary-default">Lihat keterangan</button>
         </Tooltip>
@@ -401,9 +399,7 @@ export default function Home() {
 
       <div className="mx-auto max-w-xl rounded-xl bg-white p-6 shadow-sm">
         <h1 className="mb-2 text-xl font-semibold text-zinc-700">Demo Dialog Confirmation</h1>
-
         <p className="mb-6 text-sm text-gray-500">Contoh penggunaan dialog konfirmasi untuk menyimpan perubahan.</p>
-
         <button type="button" onClick={handleOpenDialog} className="rounded-lg bg-primary-default px-5 py-3 text-sm font-semibold text-white transition-colors hover:opacity-90">
           Simpan Perubahan
         </button>
@@ -425,6 +421,66 @@ export default function Home() {
         confirmText="Simpan"
         isLoading={isSaving}
       />
+
+      {isExpanded && isAgentOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm transition-opacity"
+          onClick={() => setIsExpanded(false)}
+        />
+      )}
+
+      <div
+        className={`fixed z-50 transition-all duration-300 ease-in-out ${
+          isExpanded
+            ? "inset-0 flex items-center justify-center p-4 sm:p-6"
+            : `bottom-[110px] left-8 origin-bottom-left ${
+                isAgentOpen
+                  ? "translate-y-0 scale-100 opacity-100"
+                  : "pointer-events-none translate-y-4 scale-95 opacity-0"
+              }`
+        }`}
+      >
+        <div
+          className={`rounded-2xl shadow-2xl transition-all duration-300 ${
+            isExpanded
+              ? "h-[90vh] w-full max-w-5xl"
+              : "h-[500px] max-h-[calc(100vh-140px)] w-[300px]"
+          }`}
+        >
+          <AIAgent
+            questionId={MOCK_QUESTION.questionId}
+            questionType={MOCK_QUESTION.questionType}
+            questionContext={MOCK_QUESTION.questionContext}
+            status={getMockStatus(wrongAttempts, isSolved)}
+            isSubmitting={isSubmitting}
+            onRequestHint={mockRequestHint}
+            isOpen={isAgentOpen}
+            onClose={() => {
+              setIsAgentOpen(false);
+              setIsExpanded(false);
+            }}
+            isExpanded={isExpanded}
+            onToggleExpand={() => setIsExpanded((prev) => !prev)}
+          />
+        </div>
+      </div>
+
+      <div className="fixed bottom-4 left-8 z-50">
+        <button
+          type="button"
+          onClick={() => setIsAgentOpen((prev) => !prev)}
+          aria-label={isAgentOpen ? "Tutup asisten AI" : "Buka asisten AI"}
+          className="rounded-full shadow-lg transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-active"
+        >
+          <Image
+            src="/icons/Kabi.svg"
+            alt=""
+            width={80}
+            height={80}
+            className="shrink-0"
+          />
+        </button>
+      </div>
     </div>
   );
 }
