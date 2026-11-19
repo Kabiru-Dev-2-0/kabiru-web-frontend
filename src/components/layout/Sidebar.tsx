@@ -96,7 +96,7 @@ export default function Sidebar() {
     <aside className="box-border fixed left-0 top-0 z-50 h-screen flex w-[306px] shrink-0 flex-col gap-8 border-r border-[#E8E8E8] bg-white p-8">
       {/* Logo */}
       <Link href="/dashboard" aria-label="Kabiru Web - Dashboard">
-        <img src="/assets/logo.svg" alt="Kabiru Web" className="block h-[42px] w-[140px] object-contain" />
+        <img src="/icons/logo.svg" alt="Kabiru Web" className="block h-[42px] w-[140px] object-contain" />
       </Link>
 
       {/* Navigasi utama dan navigasi akun */}
